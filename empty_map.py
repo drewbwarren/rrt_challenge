@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
+from math import atan2
 
 # Workspace
 D = [
@@ -38,6 +39,12 @@ def nearest_vertex(q_rand): # returns the index of the vertex in G that is the c
             min_length = [d,i]
     return min_length[1]
 
+def new_conf(q_rand, q_near):
+    angle = atan2(q_rand[1] - q_near[1], q_rand[0] - q_near[0])
+    x_new = q_near[0] + dq*np.cos(angle)
+    y_new = q_near[1] + dq*np.sin(angle)
+    return [x_new, y_new]
+
 def G_plot():
     verts = []
     codes = []
@@ -66,7 +73,7 @@ def main():
         vertex_ind = nearest_vertex(q_rand) # Line 2
 
         # Determine new configuration - just use q_rand
-        q_new = q_rand # Line 3
+        q_new = new_conf(q_rand, G[vertex_ind][0]) # Line 3
 
         # Add q_new to vertex_list and edge_list
         # print i+1, vertex_ind, q_new
